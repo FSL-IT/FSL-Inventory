@@ -76,4 +76,11 @@
     </div>
     
   </div>
+
+  <?php 
+  include 'modal_view_asset.php';
+  include 'modal_view_asset.php';
+  include 'modal_po.php';
+  ?>
+  
 </div>

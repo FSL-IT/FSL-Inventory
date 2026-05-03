@@ -87,65 +87,17 @@ $pageTitle = 'Dashboard';
                         </div>
                     </div>
                 </div>
-
-                <!-- Table Row -->
-                <div class="dashboard-panel p-0 overflow-hidden">
-                    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0" style="color: var(--color-navy);">Recent PO transactions</h6>
-                        <a href="#" style="color: var(--color-orange); font-size: 12px; text-decoration: none;">View all</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-custom table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>PO #</th>
-                                    <th>Category</th>
-                                    <th>Description</th>
-                                    <th>Qty</th>
-                                    <th>Date Recv.</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Mock Data matching the screenshot -->
-                                <tr>
-                                    <td class="fw-bold" style="color: var(--color-orange);">7100/NT/FY2...</td>
-                                    <td><span class="status-badge category">Laptop</span></td>
-                                    <td>HP Probook 44...</td>
-                                    <td class="fw-bold text-center">15</td>
-                                    <td class="text-muted">2024-09-29</td>
-                                    <td><span class="status-badge endorsed">Endorsed</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold" style="color: var(--color-orange);">7100/NT/FY2...</td>
-                                    <td><span class="status-badge category">Monitor</span></td>
-                                    <td>P24v G5 FHD M...</td>
-                                    <td class="fw-bold text-center">24</td>
-                                    <td class="text-muted">2024-10-31</td>
-                                    <td><span class="status-badge pending">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold" style="color: var(--color-orange);">7100/NT/FY2...</td>
-                                    <td><span class="status-badge category">Headset</span></td>
-                                    <td>JABRA BIZ 2300...</td>
-                                    <td class="fw-bold text-center">17</td>
-                                    <td class="text-muted">2024-09-18</td>
-                                    <td><span class="status-badge endorsed">Endorsed</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </main>
         </div>
     </div>
 
     <!-- Include FSL Modals -->
-    <?php include 'shared/modals.php'; ?>
+    <?php include 'modal/modals.php'; ?> <!-- Note the path matches [source: 5] -->
 
     <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/app.js"></script>
     <script src="../../assets/js/dashboard.js"></script>
     <script src="../../assets/js/modal_handler.js"></script>
 </body>
