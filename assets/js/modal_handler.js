@@ -69,4 +69,28 @@ function switchTab(tabName) {
     tabBtnSerials.classList.add("active");
     tabContentSerials.classList.remove("d-none");
   }
+
+// Add PO Modal Elements
+let modalAddPO = document.getElementById("modal_add_po");
+let btnOpenAddPO = document.getElementById("btn_open_add_po");
+let btnCloseAddPO = document.getElementById("btn_close_add_po");
+let btnCancelPO = document.getElementById("btn_cancel_po");
+
+if (btnOpenAddPO) {
+    btnOpenAddPO.addEventListener("click", () => {
+        modalAddPO.classList.add("open");
+    });
+}
+
+if (btnCloseAddPO) {
+    btnCloseAddPO.addEventListener("click", () => {
+        modalAddPO.classList.remove("open");
+    });
+}
+
+if (btnCancelPO) {
+    btnCancelPO.addEventListener("click", () => {
+        modalAddPO.classList.remove("open");
+    });
+}
 }
