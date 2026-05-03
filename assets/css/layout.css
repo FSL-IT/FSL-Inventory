@@ -1,21 +1,28 @@
-/* Sidebar Styling */
+/* Core Application Shell */
+#app_shell {
+  background-color: var(--color-bg-main);
+  height: 100vh;
+  overflow: hidden; /* Prevents whole page from scrolling */
+}
+
+/* 1. Sidebar Styling */
 .sidebar-wrapper {
-  width: 240px;
+  width: 250px;
   background-color: var(--color-navy);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--color-navy-light);
   z-index: 100;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
 .sidebar-brand {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .brand-icon {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   background-color: var(--color-orange);
   border-radius: var(--radius-sm);
   color: var(--color-white);
@@ -23,39 +30,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 16px;
 }
 
 .sidebar-role-badge {
-  background-color: var(--color-orange-dim);
+  background-color: transparent;
   color: var(--color-orange);
-  border: 1px solid rgba(249, 115, 22, 0.3);
+  border: 1px solid var(--color-orange);
   border-radius: 20px;
   font-size: 10px;
   font-weight: 700;
-  padding: 4px 10px;
-  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  letter-spacing: 0.05em;
+  display: inline-block;
 }
 
 .sidebar-section-title {
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 8px 16px 4px;
+  letter-spacing: 0.1em;
+  padding: 16px 20px 8px;
 }
 
 .sidebar-nav-item {
   color: var(--color-text-sidebar);
-  padding: 8px 12px;
-  margin: 2px 12px;
-  border-radius: 6px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
   text-decoration: none;
+  font-size: 13px;
 }
 
 .sidebar-nav-item:hover {
@@ -67,56 +75,76 @@
   background-color: var(--color-orange);
   color: var(--color-white);
   font-weight: 600;
+  border-radius: 0 20px 20px 0;
+  margin-right: 20px; /* Gives the floating pill effect from the image */
 }
 
 .sidebar-badge {
   background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 10px;
   margin-left: auto;
+  font-weight: 600;
 }
 
 /* Category Accordion */
+/* Sidebar Categories (Image 1) */
 .category-menu {
-  display: none;
-  padding-left: 34px;
   flex-direction: column;
-}
-
-.category-menu.open {
-  display: flex;
+  padding-left: 44px;
 }
 
 .category-item {
   color: var(--color-text-sidebar);
-  font-size: 12px;
-  padding: 6px 8px;
-  border-radius: 4px;
+  font-size: 13px;
+  padding: 8px 0;
   cursor: pointer;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.15s;
 }
 
 .category-item:hover {
   color: var(--color-white);
-  background-color: var(--color-navy-hover);
 }
 
-/* Header Styling */
+.category-item.active {
+  color: var(--color-orange);
+  font-weight: 600;
+}
+
+.category-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.category-item.active .category-dot {
+  background-color: var(--color-orange);
+}
+
+/* 2. Header Styling */
 .header-wrapper {
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-border-dark);
-  height: 60px;
+  height: 70px;
   padding: 0 24px;
+  z-index: 90;
 }
 
 .header-search {
   background-color: var(--color-bg-main);
-  border: 1px solid var(--color-border-dark);
-  border-radius: 20px;
-  padding: 6px 16px;
-  width: 300px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 16px 8px 36px;
+  width: 320px;
   color: var(--color-text-main);
+  font-size: 13px;
+  transition: border-color 0.15s;
 }
 
 .header-search:focus {
@@ -126,14 +154,15 @@
 }
 
 .btn-primary-custom {
-  background-color: var(--color-navy);
+  background-color: var(--color-text-main);
   color: var(--color-white);
   border-radius: var(--radius-sm);
   font-weight: 600;
   border: none;
+  padding: 8px 16px;
 }
 
 .btn-primary-custom:hover {
-  background-color: var(--color-navy-light);
+  background-color: var(--color-orange);
   color: var(--color-white);
 }

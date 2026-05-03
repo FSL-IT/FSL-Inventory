@@ -143,3 +143,90 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+
+/* Dark Theme Modal (Image 2) */
+.modal-dark-theme {
+  background-color: var(--color-navy); /* #0B1F3A */
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 650px;
+}
+
+.dark-close-btn {
+  background-color: rgba(0, 50, 150, 0.3);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dark-close-btn:hover {
+  background-color: var(--color-orange);
+}
+
+.modal-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-orange);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 24px 0 12px 0;
+}
+
+.modal-section-header::after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  background-color: rgba(249, 115, 22, 0.3); /* Faded orange line */
+}
+
+/* Info Cards inside dark modal */
+.info-card-dark {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+
+.info-label {
+  font-size: 10px;
+  color: var(--color-text-sidebar);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.info-value-orange {
+  color: var(--color-orange);
+}
+
+/* Serial Number Chips */
+.serial-chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.serial-chip {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--color-white);
+}
