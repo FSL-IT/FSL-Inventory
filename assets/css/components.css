@@ -1,0 +1,78 @@
+/* Login Page Background with Subtle Radial Gradients */
+.login-page {
+  min-height: 100vh;
+  background-color: var(--color-navy);
+  background-image: 
+    radial-gradient(ellipse at 20% 30%, rgba(26, 58, 107, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(244, 130, 10, 0.1) 0%, transparent 50%);
+}
+
+.login-card {
+  background-color: var(--color-navy-light);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-orange), #c2410c);
+  border-radius: 12px;
+}
+
+/* Custom Input Styling */
+.custom-input, .custom-input-group {
+  background-color: var(--color-navy) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--color-white) !important;
+}
+
+.custom-input:focus {
+  border-color: var(--color-orange) !important;
+  box-shadow: none !important;
+}
+
+.custom-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.custom-input-group {
+  cursor: pointer;
+  color: var(--color-text-muted) !important;
+}
+
+/* Button Styling */
+.custom-btn {
+  background-color: var(--color-orange) !important;
+  color: var(--color-white) !important;
+  font-weight: 700 !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  transition: transform 0.15s ease, background-color 0.15s ease !important;
+}
+
+.custom-btn:hover {
+  background-color: var(--color-orange-hover) !important;
+  transform: translateY(-2px);
+}
+
+.custom-btn.btn-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Error Toast */
+.error-toast {
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Helper utility for JS toggles */
+.d-none {
+  display: none !important;
+}

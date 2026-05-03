@@ -1,0 +1,39 @@
+:root {
+  /* 60% Dominant - Deep Navy */
+  --color-navy: #0B1F3A;
+  --color-navy-light: #112847;
+  --color-navy-hover: rgba(255, 255, 255, 0.07);
+  
+  /* 10% Accent - Orange */
+  --color-orange: #F97316;
+  --color-orange-hover: #EA580C;
+  --color-orange-dim: rgba(249, 115, 22, 0.15);
+  
+  /* 20% Base - Soft Whites/Grays */
+  --color-white: #FFFFFF;
+  --color-bg-main: #F4F7FB;
+  --color-border: #EAF0F8;
+  --color-border-dark: #D1DCE8;
+  
+  /* Text Colors */
+  --color-text-main: #0B1F3A;
+  --color-text-muted: #4A607A;
+  --color-text-light: #8FA3BA;
+  --color-text-sidebar: rgba(255, 255, 255, 0.55);
+  
+  /* Status Colors */
+  --color-success: #16A34A;
+  --color-success-bg: #DCFCE7;
+  --color-warning: #D97706;
+  --color-warning-bg: #FEF3C7;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  font-size: 13px;
+}
