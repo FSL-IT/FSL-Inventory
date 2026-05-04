@@ -81,6 +81,8 @@
   include 'modal_view_asset.php';
   include 'modal_view_asset.php';
   include 'modal_po.php';
+  include 'modal_user.php';
+  include 'modal_add_asset.php';
   ?>
   
 </div>

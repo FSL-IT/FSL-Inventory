@@ -16,3 +16,11 @@ function requireLogin() {
 function isAdmin() {
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
+
+function requireAdmin() {
+    if (!isAdmin()) {
+        // If they aren't an admin, block access completely
+        header('HTTP/1.1 403 Forbidden');
+        exit('Access Denied: You must be an administrator to view this page.');
+    }
+}

@@ -15,9 +15,10 @@ if (!$assetId) {
 try {
     $db = Database::getConnection();
     
+    // Fetch Main Asset Details
     $query = "
         SELECT 
-            a.id, a.serial_number, a.description, a.remarks, a.status,
+            a.id, a.serial_number, a.description, a.remarks, a.status, a.po_id, a.category_id,
             c.name as category_name, 
             po.po_number, po.date_received, po.date_endorsed,
             v.name as vendor_name,
@@ -38,8 +39,22 @@ try {
     $asset = $stmt->fetch();
 
     if ($asset) {
-        // In a real scenario, you might query ALL assets under the same PO to get the list of serials.
-        // For this implementation, we will return the specific asset data.
+        // Fetch Sibling Serials (Same PO, Same Category) to populate the chip grid
+        $siblingQuery = "
+            SELECT id, serial_number 
+            FROM assets 
+            WHERE po_id = :po_id AND category_id = :cat_id AND deleted_at IS NULL
+        ";
+        $sibStmt = $db->prepare($siblingQuery);
+        $sibStmt->execute([
+            'po_id' => $asset['po_id'],
+            'cat_id' => $asset['category_id']
+        ]);
+        $asset['sibling_serials'] = $sibStmt->fetchAll();
+
+        // Calculate total quantity for this specific PO/Category batch
+        $asset['total_quantity'] = count($asset['sibling_serials']);
+
         echo json_encode(['success' => true, 'data' => $asset]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Asset not found.']);

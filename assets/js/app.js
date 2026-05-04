@@ -41,6 +41,10 @@ async function loadSidebarCategories() {
     let menu = document.getElementById("menu_categories");
     if (!menu) return;
 
+    // Check URL to see if a category is already selected
+    let urlParams = new URLSearchParams(window.location.search);
+    let activeCategory = urlParams.get('category') || 'All';
+
     try {
         let response = await fetch('/fsl-inventory/src/api/categories.php');
         let result = await response.json();
@@ -50,12 +54,19 @@ async function loadSidebarCategories() {
             return;
         }
 
-        let html = "";
-        
-        // Loop through fetched categories (NO "All" option included)
+        // Generate "All" option
+        let isActiveAll = (activeCategory === 'All') ? 'active' : '';
+        let html = `
+            <div class="category-item ${isActiveAll}" data-category="All">
+                <div class="category-dot"></div> All
+            </div>
+        `;
+
+        // Append fetched categories
         result.data.forEach(cat => {
+            let isActive = (activeCategory === cat.name) ? 'active' : '';
             html += `
-                <div class="category-item" data-category="${cat.name}">
+                <div class="category-item ${isActive}" data-category="${cat.name}">
                     <div class="category-dot"></div> ${cat.name}
                 </div>
             `;
@@ -63,17 +74,32 @@ async function loadSidebarCategories() {
 
         menu.innerHTML = html;
 
+        // Attach click listeners
         let categoryItems = document.querySelectorAll(".category-item");
+        
         categoryItems.forEach(item => {
             item.addEventListener("click", function() {
-                categoryItems.forEach(i => i.classList.remove("active"));
-                this.classList.add("active");
-                
                 let selectedCategory = this.getAttribute("data-category");
-                let filterEvent = new CustomEvent("categoryFiltered", { 
-                    detail: { category: selectedCategory } 
-                });
-                document.dispatchEvent(filterEvent);
+                let currentPath = window.location.pathname;
+
+                if (currentPath.includes("assets.php")) {
+                    // We are already on the Inventory page -> Filter instantly
+                    categoryItems.forEach(i => i.classList.remove("active"));
+                    this.classList.add("active");
+                    
+                    let filterEvent = new CustomEvent("categoryFiltered", { 
+                        detail: { category: selectedCategory } 
+                    });
+                    document.dispatchEvent(filterEvent);
+
+                    // Update the URL without reloading the page
+                    let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?category=' + encodeURIComponent(selectedCategory);
+                    window.history.pushState({path: newUrl}, '', newUrl);
+
+                } else {
+                    // We are on Dashboard or another page -> Redirect to Inventory
+                    window.location.href = `/fsl-inventory/src/views/assets.php?category=${encodeURIComponent(selectedCategory)}`;
+                }
             });
         });
 

@@ -1,19 +1,19 @@
 <div class="modal-shell" id="modal_view_asset">
-  <div class="custom-modal modal-dark-theme p-4">
+  <div class="custom-modal modal-dark-theme p-4 print-area">
     
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-start mb-2">
+    <div class="d-flex justify-content-between align-items-start mb-4">
       <div>
-        <div class="d-inline-flex align-items-center gap-2 px-2 py-1 mb-2 rounded" style="background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3);">
-          <span style="color: var(--color-orange); font-size: 11px; font-weight: 700;" id="view_category_badge">📦 Category</span>
+        <div class="d-inline-flex align-items-center gap-2 px-2 py-1 mb-2 rounded modal-category-badge">
+          <i class="bi bi-box-seam"></i> <span id="view_category_badge">Category</span>
         </div>
-        <h3 class="fw-bold text-white m-0" id="view_description" style="font-family: 'Syne', sans-serif;">Loading...</h3>
+        <h3 class="fw-bold text-white m-0" id="view_description">Loading...</h3>
         <div class="text-muted mt-1 small" id="view_vendor_sub">Vendor info</div>
       </div>
-      <button class="dark-close-btn" id="btn_close_view_asset"><i class="bi bi-x-lg"></i></button>
+      <button class="dark-close-btn no-print" id="btn_close_view_asset"><i class="bi bi-x-lg"></i></button>
     </div>
 
-    <div class="modal-body-custom px-0" style="overflow-x: hidden;">
+    <div class="modal-body-custom px-0 py-2">
       
       <!-- PO INFO -->
       <div class="modal-section-header"><i class="bi bi-receipt"></i> Purchase Order Info</div>
@@ -45,7 +45,7 @@
       </div>
 
       <!-- ASSIGNMENT INFO -->
-      <div class="modal-section-header"><i class="bi bi-geo-alt"></i> Assignment Info</div>
+      <div class="modal-section-header mt-4"><i class="bi bi-geo-alt"></i> Assignment Info</div>
       <div class="row g-3">
         <div class="col-6">
           <div class="info-card-dark">
@@ -67,14 +67,14 @@
         </div>
         <div class="col-6">
           <div class="info-card-dark">
-            <div class="info-label">Status</div>
-            <div class="info-value" id="view_status">--</div>
+            <div class="info-label">Quantity (PO)</div>
+            <div class="info-value" id="view_quantity">--</div>
           </div>
         </div>
       </div>
 
       <!-- SERIAL NUMBERS -->
-      <div class="modal-section-header"><i class="bi bi-upc-scan"></i> Serial Number</div>
+      <div class="modal-section-header mt-4"><i class="bi bi-upc-scan"></i> Serial Numbers</div>
       <div class="info-card-dark p-3">
         <div class="serial-chip-container" id="view_serial_container">
           <div class="serial-chip">Loading...</div>
@@ -82,18 +82,19 @@
       </div>
 
       <!-- REMARKS -->
-      <div class="modal-section-header"><i class="bi bi-chat-left-text"></i> Remarks</div>
-      <div class="info-card-dark" style="min-height: 80px;" id="view_remarks">
-        No remarks.
+      <div class="modal-section-header mt-4"><i class="bi bi-chat-left-text"></i> Remarks</div>
+      <div class="info-card-dark position-relative">
+        <div id="view_remarks_display" class="info-value text-muted" style="min-height: 40px; font-weight: normal;">No remarks.</div>
+        <textarea id="input_edit_remarks" class="form-control d-none custom-dark-textarea" rows="3"></textarea>
       </div>
 
     </div>
 
     <!-- Footer Actions -->
-    <div class="d-flex justify-content-end gap-3 mt-3 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
-      <button class="btn btn-outline-light d-flex align-items-center gap-2"><i class="bi bi-printer"></i> Print</button>
+    <div class="d-flex justify-content-end gap-3 mt-4 pt-4 border-top border-secondary no-print">
+      <button class="btn btn-outline-light d-flex align-items-center gap-2" id="btn_print_asset"><i class="bi bi-printer"></i> Print</button>
       <button class="btn btn-outline-light d-flex align-items-center gap-2"><i class="bi bi-download"></i> Export</button>
-      <button class="btn btn-warning d-flex align-items-center gap-2 fw-bold" style="background-color: var(--color-orange); border: none; color: white;"><i class="bi bi-pencil"></i> Edit Remarks</button>
+      <button class="btn custom-btn-orange d-flex align-items-center gap-2" id="btn_edit_remarks"><i class="bi bi-pencil"></i> <span>Edit Remarks</span></button>
     </div>
 
   </div>

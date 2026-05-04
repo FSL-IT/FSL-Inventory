@@ -93,4 +93,70 @@ if (btnCancelPO) {
         modalAddPO.classList.remove("open");
     });
 }
+
+// Add User Modal Elements
+let modalAddUser = document.getElementById("modal_add_user");
+let btnOpenAddUser = document.getElementById("btn_open_add_user");
+let btnCloseAddUser = document.getElementById("btn_close_add_user");
+let btnCancelUser = document.getElementById("btn_cancel_user");
+
+if (btnOpenAddUser) {
+    btnOpenAddUser.addEventListener("click", () => {
+        modalAddUser.classList.add("open");
+    });
+}
+
+if (btnCloseAddUser) {
+    btnCloseAddUser.addEventListener("click", () => {
+        modalAddUser.classList.remove("open");
+    });
+}
+
+if (btnCancelUser) {
+    btnCancelUser.addEventListener("click", () => {
+        modalAddUser.classList.remove("open");
+    });
+}
+
+// --- Add Asset Modal Tab Logic ---
+let tabAddBasic = document.getElementById("tab_add_basic");
+let tabAddLocation = document.getElementById("tab_add_location");
+let tabAddSerials = document.getElementById("tab_add_serials");
+
+let contentAddBasic = document.getElementById("content_add_basic");
+let contentAddLocation = document.getElementById("content_add_location");
+let contentAddSerials = document.getElementById("content_add_serials");
+
+function switchAddAssetTab(activeTabStr) {
+    if(!tabAddBasic) return;
+
+    // Reset styles
+    [tabAddBasic, tabAddLocation, tabAddSerials].forEach(t => {
+        t.classList.remove("active", "text-light");
+        t.classList.add("text-muted");
+    });
+    
+    [contentAddBasic, contentAddLocation, contentAddSerials].forEach(c => {
+        c.classList.add("d-none");
+    });
+
+    // Set active
+    if(activeTabStr === 'basic') {
+        tabAddBasic.classList.add("active", "text-light");
+        tabAddBasic.classList.remove("text-muted");
+        contentAddBasic.classList.remove("d-none");
+    } else if (activeTabStr === 'location') {
+        tabAddLocation.classList.add("active", "text-light");
+        tabAddLocation.classList.remove("text-muted");
+        contentAddLocation.classList.remove("d-none");
+    } else if (activeTabStr === 'serials') {
+        tabAddSerials.classList.add("active", "text-light");
+        tabAddSerials.classList.remove("text-muted");
+        contentAddSerials.classList.remove("d-none");
+    }
+}
+
+if(tabAddBasic) tabAddBasic.addEventListener("click", () => switchAddAssetTab("basic"));
+if(tabAddLocation) tabAddLocation.addEventListener("click", () => switchAddAssetTab("location"));
+if(tabAddSerials) tabAddSerials.addEventListener("click", () => switchAddAssetTab("serials"));
 }
