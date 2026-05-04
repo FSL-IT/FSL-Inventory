@@ -7,7 +7,6 @@ header('Content-Type: application/json');
 
 $db = Database::getConnection();
 
-// --- Handle POST Request (Add New Asset) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawData = file_get_contents("php://input");
     $data = json_decode($rawData, true);
@@ -26,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Split textarea serials by newline and remove empty ones
     $serialArray = array_filter(array_map('trim', explode("\n", $serialsRaw)));
 
     if (empty($serialArray)) {
@@ -73,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// --- Handle PUT Request (Edit Remarks) ---
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $rawData = file_get_contents("php://input");
     $data = json_decode($rawData, true);
@@ -99,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     }
 }
 
-// --- Handle GET Request (Fetch Inventory Table) ---
 try {
     $query = "
         SELECT 
@@ -116,8 +112,14 @@ try {
     $stmt = $db->query($query);
     $assets = $stmt->fetchAll();
 
+    $stmt = $db->query($query);
+    $assets = $stmt->fetchAll();
+
+    if (ob_get_length()) ob_clean(); 
+    
     echo json_encode(['success' => true, 'data' => $assets]);
 } catch (Exception $e) {
     error_log("Assets API Error: " . $e->getMessage());
+    if (ob_get_length()) ob_clean();
     echo json_encode(['success' => false, 'message' => 'Failed to load assets.']);
 }   

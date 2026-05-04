@@ -5,11 +5,23 @@ function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
+function isApiRequest() {
+    return strpos($_SERVER['REQUEST_URI'], '/api/') !== false || 
+           (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+}
+
 function requireLogin() {
     if (!isLoggedIn()) {
-        // Use the absolute project path to avoid double-URL errors
-        header('Location: /fsl-inventory/src/views/auth/login.php');
-        exit();
+        if (isApiRequest()) {
+            header('HTTP/1.1 401 Unauthorized');
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Session expired. Please log in again.']);
+            exit();
+        } else {
+            $basePath = '/' . explode('/', trim($_SERVER['REQUEST_URI'], '/'))[0];
+            header("Location: $basePath/src/views/auth/login.php");
+            exit();
+        }
     }
 }
 
@@ -19,8 +31,14 @@ function isAdmin() {
 
 function requireAdmin() {
     if (!isAdmin()) {
-        // If they aren't an admin, block access completely
-        header('HTTP/1.1 403 Forbidden');
-        exit('Access Denied: You must be an administrator to view this page.');
+        if (isApiRequest()) {
+            header('HTTP/1.1 403 Forbidden');
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Access Denied: Admins only.']);
+            exit();
+        } else {
+            header('HTTP/1.1 403 Forbidden');
+            exit('Access Denied: You must be an administrator.');
+        }
     }
 }

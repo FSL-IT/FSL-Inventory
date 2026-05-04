@@ -1,6 +1,47 @@
+/* Base Shell - MUST be fixed, hidden, and have a high z-index */
+.modal-shell {
+  display: none !important; /* Force hide by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(7, 21, 38, 0.75);
+  z-index: 1055; /* Higher than Bootstrap navbar */
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Javascript toggles this class to make the modal appear */
+.modal-shell.open {
+  display: flex !important; 
+}
+
+/* Custom Modal Container */
+.custom-modal {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  width: 560px;
+  max-width: 95%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border-dark);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  margin: auto;
+}
+
+/* Rest of your existing modal CSS goes here... */
+.custom-modal.modal-sm { width: 420px; }
+.custom-modal.modal-md { width: 480px; }
+.custom-modal.modal-lg { width: 700px; }
+
 /* Dark Theme Modal */
 .modal-dark-theme {
-  background-color: #071222; /* Matches the deep background from image */
+  background-color: #071222; 
   color: var(--color-white);
   border: 1px solid rgba(255, 255, 255, 0.05);
   width: 700px;
@@ -18,7 +59,7 @@
 
 .dark-close-btn {
   background-color: rgba(255, 255, 255, 0.05);
-  color: var(--color-text-sidebar);
+  color: rgba(255, 255, 255, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   width: 36px;
@@ -31,8 +72,8 @@
 }
 
 .dark-close-btn:hover {
-  background-color: var(--color-danger);
-  color: var(--color-white);
+  background-color: #ef4444; /* Bootstrap Danger Red */
+  color: #FFFFFF;
 }
 
 .modal-section-header {
@@ -57,7 +98,7 @@
 .info-card-dark {
   background-color: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   padding: 14px 18px;
 }
 
@@ -79,7 +120,6 @@
   color: var(--color-orange);
 }
 
-/* Serial Number Chips */
 .serial-chip-container {
   display: flex;
   flex-wrap: wrap;
@@ -104,13 +144,13 @@
   font-weight: bold;
 }
 
-/* Edit Textarea */
 .custom-dark-textarea {
   background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--color-orange);
   color: var(--color-white);
   font-size: 13px;
 }
+
 .custom-dark-textarea:focus {
   background-color: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
@@ -124,14 +164,122 @@
   font-weight: 600;
   border: none;
 }
+
 .custom-btn-orange:hover {
-  background-color: var(--color-orange-hover);
+  background-color: #EA580C;
   color: var(--color-white);
 }
 
-@media print {
-  body * { visibility: hidden; }
-  .print-area, .print-area * { visibility: visible; }
-  .print-area { position: absolute; left: 0; top: 0; }
-  .no-print { display: none !important; }
+.modal-header-custom {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-border-dark);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modal-title-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.modal-sub-text {
+  font-size: 11px;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.modal-close-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-dark);
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.modal-close-btn:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+.modal-body-custom {
+  padding: 18px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer-custom {
+  padding: 12px 18px;
+  border-top: 1px solid var(--color-border-dark);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-border-dark);
+  margin-bottom: 14px;
+}
+
+.modal-tab {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.12s;
+}
+
+.modal-tab.active {
+  color: var(--color-orange);
+  border-bottom-color: var(--color-orange);
+}
+
+.form-group-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.form-group-custom label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.form-group-custom input, 
+.form-group-custom select, 
+.form-group-custom textarea {
+  padding: 7px 10px;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--color-text-main);
+  background-color: var(--color-white);
+  outline: none;
+  width: 100%;
+}
+
+.form-group-custom input:focus, 
+.form-group-custom select:focus, 
+.form-group-custom textarea:focus {
+  border-color: var(--color-orange);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
