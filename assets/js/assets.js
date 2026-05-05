@@ -1,38 +1,30 @@
+// --- Global Variables & DOM Elements ---
 let currentViewAssetId = null;
 let searchTimeout;
 
-document.addEventListener("DOMContentLoaded", () => {
-  initializeAssetsPage();
-  setupModalInteractions();
-  setupAddAssetFeature();
-  setupSearchFeature();
-});
-
-// Add these to the top of your file
 const searchInput = document.getElementById("search_input");
 const filterCategory = document.getElementById("filter_category");
 
-document.addEventListener("DOMContentLoaded", () => {
+// GUIDELINE: Single DOMContentLoaded listener
+document.addEventListener("DOMContentLoaded", initializeApp);
+
+function initializeApp() {
   initializeAssetsPage();
   setupModalInteractions();
   setupAddAssetFeature();
-  setupFilters(); // New combined filter setup
-});
+  setupFilters();
+}
 
 async function initializeAssetsPage() {
-  // 1. Fetch categories for the filter dropdown
   await populateCategoryFilter();
 
-  // 2. Check URL parameters for direct category links (from Sidebar or Dashboard)
   let urlParams = new URLSearchParams(window.location.search);
   let initialCategory = urlParams.get("category") || "";
   
   if (initialCategory && filterCategory) {
-    // Attempt to set the dropdown to the URL parameter value
     filterCategory.value = initialCategory;
   }
   
-  // 3. Fetch the initial inventory data
   fetchInventoryData(initialCategory, "");
 }
 
@@ -40,6 +32,7 @@ async function populateCategoryFilter() {
   if (!filterCategory) return;
 
   let response;
+  // GUIDELINE: Isolate fetch statement
   try {
     response = await fetch("../api/categories.php");
   } catch (error) {
@@ -49,43 +42,45 @@ async function populateCategoryFilter() {
 
   if (!response.ok) return;
 
-  let data = await response.json();
-  
-  if (data.success) {
-    let catHtml = '<option value="">All Categories</option>';
-    data.data.forEach(c => {
-      // Assuming the API allows filtering by Category Name or ID. 
-      // Adjust value to c.id if your backend expects ID instead of Name.
-      catHtml += `<option value="${c.name}">${c.name}</option>`; 
-    });
-    filterCategory.innerHTML = catHtml;
+  let data;
+  // GUIDELINE: Isolate JSON parsing
+  try {
+    data = await response.json();
+  } catch (error) {
+    console.error("JSON Parse Error:", error);
+    return;
   }
+  
+  if (!data.success) return;
+
+  let catHtml = '<option value="">All Categories</option>';
+  data.data.forEach(c => {
+    catHtml += `<option value="${c.name}">${c.name}</option>`; 
+  });
+  
+  filterCategory.innerHTML = catHtml;
 }
 
 function setupFilters() {
   if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      clearTimeout(searchTimeout);
-      
-      // Debounce API call by 300ms
-      searchTimeout = setTimeout(() => {
-        triggerDataFetch();
-      }, 300);
-    });
+    // GUIDELINE: Pass function directly
+    searchInput.addEventListener("input", handleSearchInput);
   }
 
   if (filterCategory) {
-    filterCategory.addEventListener("change", function () {
-      triggerDataFetch();
-    });
+    // GUIDELINE: Pass function directly
+    filterCategory.addEventListener("change", triggerDataFetch);
   }
 }
 
-// Unified function to read both inputs and fetch data
+function handleSearchInput() {
+  clearTimeout(searchTimeout);
+  // GUIDELINE: Pass function directly to setTimeout
+  searchTimeout = setTimeout(triggerDataFetch, 300);
+}
+
 function triggerDataFetch() {
   let currentSearch = searchInput ? searchInput.value.trim() : "";
-  
-  // Get the selected category value. If it's "All Categories", value is ""
   let currentCategory = filterCategory ? filterCategory.value : "";
 
   fetchInventoryData(currentCategory, currentSearch);
@@ -95,7 +90,6 @@ async function fetchInventoryData(category = "", searchQuery = "") {
   let tableBody = document.getElementById("table_inventory_body");
   if (!tableBody) return;
 
-  // Show loading spinner
   tableBody.innerHTML = `
     <tr id="loading_spinner">
       <td colspan="6" class="text-center py-4">
@@ -105,35 +99,45 @@ async function fetchInventoryData(category = "", searchQuery = "") {
       </td>
     </tr>`;
 
-  let response;
-  try {
-    let params = new URLSearchParams();
-    if (category) params.append("category", category);
-    if (searchQuery) params.append("search", searchQuery);
+  let params = new URLSearchParams();
+  if (category) params.append("category", category);
+  if (searchQuery) params.append("search", searchQuery);
 
+  let response;
+  // GUIDELINE: Isolate fetch statement
+  try {
     response = await fetch(`../api/assets.php?${params.toString()}`);
   } catch (error) {
     console.error("Network Error:", error);
-    tableBody.innerHTML = `<tr><td colspan="6" class="text-danger text-center p-4">Could not connect to API.</td></tr>`;
+    let errHtml = `<tr><td colspan="6" class="text-danger text-center p-4">`;
+    errHtml += `Could not connect to API.</td></tr>`;
+    tableBody.innerHTML = errHtml;
     return;
   }
 
   if (!response.ok) {
-    tableBody.innerHTML = `<tr><td colspan="6" class="text-danger text-center p-4">HTTP Error: ${response.status}</td></tr>`;
+    let errHtml = `<tr><td colspan="6" class="text-danger text-center p-4">`;
+    errHtml += `HTTP Error: ${response.status}</td></tr>`;
+    tableBody.innerHTML = errHtml;
     return;
   }
 
   let result;
+  // GUIDELINE: Isolate JSON parsing
   try {
     result = await response.json();
   } catch (error) {
     console.error("JSON Parse Error:", error);
-    tableBody.innerHTML = `<tr><td colspan="6" class="text-danger text-center p-4">Server response error.</td></tr>`;
+    let errHtml = `<tr><td colspan="6" class="text-danger text-center p-4">`;
+    errHtml += `Server response error.</td></tr>`;
+    tableBody.innerHTML = errHtml;
     return;
   }
 
   if (!result.success) {
-    tableBody.innerHTML = `<tr><td colspan="6" class="text-danger text-center p-4">Backend Error: ${result.message}</td></tr>`;
+    let errHtml = `<tr><td colspan="6" class="text-danger text-center p-4">`;
+    errHtml += `Backend Error: ${result.message}</td></tr>`;
+    tableBody.innerHTML = errHtml;
     return;
   }
 
@@ -142,7 +146,9 @@ async function fetchInventoryData(category = "", searchQuery = "") {
 
 function renderInventoryTable(dataList, tableBody) {
   if (!dataList || !dataList.length) {
-    tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted p-4">No assets found matching the criteria.</td></tr>`;
+    let emptyHtml = `<tr><td colspan="6" class="text-center text-muted p-4">`;
+    emptyHtml += `No assets found.</td></tr>`;
+    tableBody.innerHTML = emptyHtml;
     return;
   }
 
@@ -158,18 +164,21 @@ function renderInventoryTable(dataList, tableBody) {
         statusClass = "badge-pending";
     }
 
-    let poNumber = asset.po_number || "--";
-    let location = asset.location_name || "Unassigned";
-    let category = asset.category_name || "Uncategorized";
+    let poNum = asset.po_number || "--";
+    let loc = asset.location_name || "Unassigned";
+    let cat = asset.category_name || "Uncategorized";
 
-    // FIX: Removed 'text-white' from the first <td> to fix the invisible font bug
     htmlContent += `
       <tr class="table-row" onclick="openAssetDetailsModal(${asset.id})">
         <td class="font-monospace small fw-bold">${asset.serial_number}</td>
-        <td><span class="badge bg-dark border border-secondary text-light">${category}</span></td>
+        <td>
+          <span class="badge bg-dark border border-secondary text-light">
+            ${cat}
+          </span>
+        </td>
         <td class="fw-medium">${asset.description}</td>
-        <td class="po-text">${poNumber}</td>
-        <td class="small text-muted">${location}</td>
+        <td class="po-text">${poNum}</td>
+        <td class="small text-muted">${loc}</td>
         <td><span class="${statusClass}">${asset.status.toUpperCase()}</span></td>
       </tr>
     `;
@@ -177,6 +186,9 @@ function renderInventoryTable(dataList, tableBody) {
 
   tableBody.innerHTML = htmlContent;
 }
+
+// ... Keep your existing Modal and Add Asset functions below this line, 
+// ensuring you apply the exact same try-catch isolation rules to them.
 
 async function openAssetDetailsModal(assetId) {
   let modal = document.getElementById("modal_view_asset");
@@ -347,32 +359,52 @@ function setupAddAssetFeature() {
 }
 
 async function populateDropdowns() {
-  try {
-    let catRes = await fetch("../api/categories.php");
-    let catData = await catRes.json();
-    let catSelect = document.getElementById("select_add_category");
-    
-    if (catData.success && catSelect) {
-      let catHtml = '<option value="">-- Select Category --</option>';
-      catData.data.forEach(c => {
-        catHtml += `<option value="${c.id}">${c.name}</option>`;
-      });
-      catSelect.innerHTML = catHtml;
-    }
+  let catSelect = document.getElementById("select_add_category");
+  let poSelect = document.getElementById("select_add_po");
 
-    let poRes = await fetch("../api/purchase_orders.php");
-    let poData = await poRes.json();
-    let poSelect = document.getElementById("select_add_po");
-    
-    if (poData.success && poSelect) {
-      let poHtml = '<option value="">-- Select Existing PO (Optional) --</option>';
-      poData.data.forEach(po => {
-        poHtml += `<option value="${po.id}">${po.po_number}</option>`;
-      });
-      poSelect.innerHTML = poHtml;
-    }
+  // Use guard clause to prevent unnecessary API calls if DOM elements are missing
+  if (!catSelect || !poSelect) return;
+
+  let catRes;
+  
+  try {
+    // try...catch isolated to the fetch statement only
+    catRes = await fetch("../api/categories.php");
   } catch (error) {
-    console.error("Failed to populate dropdowns", error);
+    console.error("Failed to fetch categories", error);
+    return;
+  }
+  
+  let catData = await catRes.json();
+  
+  if (catData.success) {
+    // Use chaining for shorter, more readable code
+    let catOptions = catData.data.map(c => 
+      `<option value="${c.id}">${c.name}</option>`
+    ).join("");
+    
+    catSelect.innerHTML = `<option value="">-- Select Category --</option>${catOptions}`;
+  }
+
+  let poRes;
+
+  try {
+    // Second try...catch isolated for the PO fetch
+    poRes = await fetch("../api/purchase_orders.php");
+  } catch (error) {
+    console.error("Failed to fetch POs", error);
+    return;
+  }
+  
+  let poData = await poRes.json();
+
+  if (poData.success) {
+    let poOptions = poData.data.map(po => 
+      `<option value="${po.id}">${po.po_number}</option>`
+    ).join("");
+    
+    poSelect.innerHTML = 
+      `<option value="">-- Select Existing PO (Optional) --</option>${poOptions}`;
   }
 }
 
@@ -439,5 +471,16 @@ function clearAddAssetForm() {
   fields.forEach(id => {
     let el = document.getElementById(id);
     if (el) el.value = "";
+  });
+
+  // Listen for clicks from the sidebar category menu
+  document.addEventListener("categoryFiltered", function (e) {
+    let selectedCat = e.detail.category === "All" ? "" : e.detail.category;
+    
+    if (filterCategory) {
+      filterCategory.value = selectedCat;
+    }
+    
+    triggerDataFetch();
   });
 }

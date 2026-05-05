@@ -1,11 +1,6 @@
 <?php
-// Get current file to set active state
 $current_page = basename($_SERVER['PHP_SELF']);
-
-// Check if the current script is inside the 'admin' subdirectory
 $is_admin_route = strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false;
-
-// Dynamically set the relative base path to ensure portability
 $base_path = $is_admin_route ? '../' : './';
 ?>
 
@@ -47,7 +42,18 @@ $base_path = $is_admin_route ? '../' : './';
     Categories
   </div>
   <ul class="nav flex-column mb-4 gap-1">
+    
     <li class="nav-item">
+      <div id="btn_toggle_categories" class="nav-link sidebar-link" style="cursor: pointer;">
+        <i class="bi bi-filter-left me-2"></i> 
+        <span class="flex-grow-1">Filter by category</span>
+        <i id="icon_category_caret" class="bi bi-caret-down-fill" style="font-size: 10px;"></i>
+      </div>
+      <div id="menu_categories" class="category-menu d-flex mt-1">
+          </div>
+    </li>
+
+    <li class="nav-item mt-2">
       <a href="<?php echo $base_path; ?>categories.php" 
         class="nav-link sidebar-link <?php echo $current_page == 'categories.php' ? 'sidebar-link-active' : ''; ?>">
         <i class="bi bi-tags me-2"></i> Manage Categories
