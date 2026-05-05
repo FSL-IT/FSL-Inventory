@@ -7,10 +7,6 @@
       <div class="small mt-1" style="color: rgba(255,255,255,0.4); font-size: 11px;">PO Inventory System</div>
     </div>
   </div>
-  
-  <div class="px-4 mt-3 mb-2">
-    <span class="sidebar-role-badge"><?= strtoupper(htmlspecialchars($_SESSION['role'])) ?></span>
-  </div>
 
   <!-- Navigation Links -->
   <div class="flex-grow-1 overflow-auto mt-2 pb-4">
@@ -52,12 +48,5 @@
         <i class="bi bi-upload fs-5"></i> Export / Import
       </a>
     <?php endif; ?>
-  </div>
-
-  <!-- Logout Fixed at Bottom -->
-  <div class="mt-auto border-top" style="border-color: rgba(255,255,255,0.05) !important;">
-    <a href="/fsl-inventory/src/api/logout.php" class="sidebar-nav-item py-4 text-muted" style="border-radius: 0; margin: 0;">
-      <i class="bi bi-box-arrow-left fs-5"></i> Logout
-    </a>
   </div>
 </nav>

@@ -7,23 +7,12 @@
   <!-- Actions & Profile -->
   <div class="d-flex align-items-center gap-3">
     
-    <!-- Search -->
-    <div class="position-relative">
-      <i class="bi bi-search position-absolute text-muted" style="left: 12px; top: 50%; transform: translateY(-50%);"></i>
-      <input type="text" id="input_global_search" class="header-search" placeholder="Search PO#, serial, description...">
-    </div>
-    
     <!-- Notification -->
     <button class="btn btn-light rounded-circle border position-relative" style="width: 40px; height: 40px;">
       <i class="bi bi-bell text-muted"></i>
       <span class="position-absolute top-0 start-100 translate-middle p-1 bg-orange border border-light rounded-circle" style="margin-top: 8px; margin-left: -8px;">
         <span class="visually-hidden">New alerts</span>
       </span>
-    </button>
-    
-    <!-- Add Asset Button -->
-    <button id="btn_add_asset" class="btn-primary-custom">
-      + Add Asset
     </button>
 
     <!-- Profile Dropdown (Moved from Sidebar) -->

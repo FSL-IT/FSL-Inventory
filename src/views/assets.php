@@ -29,7 +29,15 @@ $pageTitle = 'Inventory';
             <main id="main_content" class="p-4 overflow-auto flex-grow-1">
                 <div class="dashboard-panel p-0 overflow-hidden shadow-sm">
                     <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
-                        <h6 class="fw-bold mb-0" style="color: var(--color-navy);">All Assets</h6>
+                        <h6 class="fw-bold mb-0" style="color: var(--color-navy);">All Assets</h6>  
+                            <!-- Search -->
+                        <div class="position-relative">
+                        <i class="bi bi-search position-absolute text-muted" style="left: 12px; top: 50%; transform: translateY(-50%);"></i>
+                        <input type="text" id="input_global_search" class="header-search" placeholder="Search PO#, serial, description...">
+                        </div>                 
+                         <button id="btn_add_asset" class="btn-primary-custom">
+                        + Add Asset
+                        </button>
                         <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i> Export CSV</button>
                     </div>
                     
@@ -55,10 +63,8 @@ $pageTitle = 'Inventory';
         </div>
     </div>
 
-    <!-- CRITICAL: Include all Modals so the Dark View Modal works -->
     <?php include 'modal/modals.php'; ?>
 
-    <!-- CRITICAL: Include all JS files so the Sidebar and Logic works -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/app.js"></script>
     <script src="../../assets/js/modal_handler.js"></script>
