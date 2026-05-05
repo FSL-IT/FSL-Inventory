@@ -1,15 +1,17 @@
 <?php
+// Get current file to set active state
 $current_page = basename($_SERVER['PHP_SELF']);
 
-$base_url = '/src/views/';
+// Check if the current script is inside the 'admin' subdirectory
+$is_admin_route = strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false;
+
+// Dynamically set the relative base path to ensure portability
+$base_path = $is_admin_route ? '../' : './';
 ?>
 
-<nav 
-  id="sidebar_nav" 
-  class="d-flex flex-column flex-shrink-0 p-3 h-100" 
-  style="width: 260px; background-color: var(--color-navy-dark);">
+<nav id="sidebar_nav" class="sidebar-container d-flex flex-column flex-shrink-0 p-3 h-100">
   
-  <a href="<?php echo $base_url; ?>dashboard.php" 
+  <a href="<?php echo $base_path; ?>dashboard.php" 
     class="d-flex align-items-center mb-4 text-white text-decoration-none">
     <div class="brand-icon me-3 d-flex align-items-center justify-content-center fw-bold">
       IT
@@ -22,19 +24,19 @@ $base_url = '/src/views/';
   <div class="sidebar-heading text-muted text-uppercase mb-2 px-2">Main</div>
   <ul class="nav flex-column mb-4 gap-1">
     <li class="nav-item">
-      <a href="<?php echo $base_url; ?>dashboard.php" 
+      <a href="<?php echo $base_path; ?>dashboard.php" 
         class="nav-link sidebar-link <?php echo $current_page == 'dashboard.php' ? 'sidebar-link-active' : ''; ?>">
         <i class="bi bi-grid-1x2 me-2"></i> Dashboard
       </a>
     </li>
     <li class="nav-item">
-      <a href="<?php echo $base_url; ?>assets.php" 
+      <a href="<?php echo $base_path; ?>assets.php" 
         class="nav-link sidebar-link <?php echo $current_page == 'assets.php' ? 'sidebar-link-active' : ''; ?>">
         <i class="bi bi-pc-display me-2"></i> Search Inventory
       </a>
     </li>
     <li class="nav-item">
-      <a href="<?php echo $base_url; ?>purchase_orders.php" 
+      <a href="<?php echo $base_path; ?>purchase_orders.php" 
         class="nav-link sidebar-link <?php echo $current_page == 'purchase_orders.php' ? 'sidebar-link-active' : ''; ?>">
         <i class="bi bi-receipt me-2"></i> PO Tracker
       </a>
@@ -46,7 +48,7 @@ $base_url = '/src/views/';
   </div>
   <ul class="nav flex-column mb-4 gap-1">
     <li class="nav-item">
-      <a href="<?php echo $base_url; ?>categories.php" 
+      <a href="<?php echo $base_path; ?>categories.php" 
         class="nav-link sidebar-link <?php echo $current_page == 'categories.php' ? 'sidebar-link-active' : ''; ?>">
         <i class="bi bi-tags me-2"></i> Manage Categories
       </a>
@@ -59,19 +61,19 @@ $base_url = '/src/views/';
     </div>
     <ul class="nav flex-column gap-1">
       <li class="nav-item">
-        <a href="<?php echo $base_url; ?>admin/users.php" 
+        <a href="<?php echo $base_path; ?>admin/users.php" 
           class="nav-link sidebar-link <?php echo $current_page == 'users.php' ? 'sidebar-link-active' : ''; ?>">
           <i class="bi bi-people me-2"></i> User Management
         </a>
       </li>
       <li class="nav-item">
-        <a href="<?php echo $base_url; ?>admin/audit_logs.php" 
+        <a href="<?php echo $base_path; ?>admin/audit_logs.php" 
           class="nav-link sidebar-link <?php echo $current_page == 'audit_logs.php' ? 'sidebar-link-active' : ''; ?>">
           <i class="bi bi-clock-history me-2"></i> Audit History
         </a>
       </li>
       <li class="nav-item">
-        <a href="<?php echo $base_url; ?>admin/backup.php" 
+        <a href="<?php echo $base_path; ?>admin/backup.php" 
           class="nav-link sidebar-link <?php echo $current_page == 'backup.php' ? 'sidebar-link-active' : ''; ?>">
           <i class="bi bi-database-down me-2"></i> Backup & Restore
         </a>

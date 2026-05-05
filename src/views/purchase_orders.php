@@ -25,22 +25,22 @@ $pageTitle = 'PO Tracker';
             <?php include 'shared/header.php'; ?>
 
             <main id="main_content" class="p-4 overflow-auto flex-grow-1">
-                <div class="d-flex justify-content-between align-items-end mb-4">
-                <div>
-                    <h3 class="text-white fw-bold mb-1" style="font-family: 'Syne', sans-serif;">
-                    Inventory Search
-                    </h3>
-                    <div class="text-muted small">Manage and track all physical IT assets</div>
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-secondary custom-input">
-                    <i class="bi bi-download me-1"></i> Export
-                    </button>
-                    <button type="button" class="btn custom-btn px-4" id="btn_add_asset">
-                    <i class="bi bi-plus-lg me-1"></i> Add Asset
-                    </button>
-                </div>
-                </div>
+                    <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <h3 class="text-brand-navy fw-bold mb-1" style="font-family: 'Syne', sans-serif;">
+                        Inventory Search
+                        </h3>
+                        <div class="text-muted small">Manage and track all physical IT assets</div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary custom-input">
+                        <i class="bi bi-download me-1"></i> Export
+                        </button>
+                        <button type="button" class="btn custom-btn px-4" id="btn_add_asset">
+                        <i class="bi bi-plus-lg me-1"></i> Add Asset
+                        </button>
+                    </div>
+                    </div>
 
                 <!-- Search & Filter Toolbar -->
                 <div class="card bg-dark border-secondary mb-4">

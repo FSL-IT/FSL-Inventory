@@ -8,35 +8,87 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSearchFeature();
 });
 
-function initializeAssetsPage() {
-  // Check URL for initial category filter
+// Add these to the top of your file
+const searchInput = document.getElementById("search_input");
+const filterCategory = document.getElementById("filter_category");
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeAssetsPage();
+  setupModalInteractions();
+  setupAddAssetFeature();
+  setupFilters(); // New combined filter setup
+});
+
+async function initializeAssetsPage() {
+  // 1. Fetch categories for the filter dropdown
+  await populateCategoryFilter();
+
+  // 2. Check URL parameters for direct category links (from Sidebar or Dashboard)
   let urlParams = new URLSearchParams(window.location.search);
   let initialCategory = urlParams.get("category") || "";
   
+  if (initialCategory && filterCategory) {
+    // Attempt to set the dropdown to the URL parameter value
+    filterCategory.value = initialCategory;
+  }
+  
+  // 3. Fetch the initial inventory data
   fetchInventoryData(initialCategory, "");
-
-  document.addEventListener("categoryFiltered", function (e) {
-    let selectedCategory = e.detail.category;
-    let categoryParam = selectedCategory === "All" ? "" : selectedCategory;
-    fetchInventoryData(categoryParam, "");
-  });
 }
 
-function setupSearchFeature() {
-  let searchInput = document.getElementById("search_input");
-  
-  if (!searchInput) return;
+async function populateCategoryFilter() {
+  if (!filterCategory) return;
 
-  searchInput.addEventListener("input", function (event) {
-    let query = event.target.value.trim();
-    
-    clearTimeout(searchTimeout);
-    
-    // Debounce API call by 300ms
-    searchTimeout = setTimeout(() => {
-      fetchInventoryData("", query);
-    }, 300);
-  });
+  let response;
+  try {
+    response = await fetch("../api/categories.php");
+  } catch (error) {
+    console.error("Failed to fetch categories for filter", error);
+    return;
+  }
+
+  if (!response.ok) return;
+
+  let data = await response.json();
+  
+  if (data.success) {
+    let catHtml = '<option value="">All Categories</option>';
+    data.data.forEach(c => {
+      // Assuming the API allows filtering by Category Name or ID. 
+      // Adjust value to c.id if your backend expects ID instead of Name.
+      catHtml += `<option value="${c.name}">${c.name}</option>`; 
+    });
+    filterCategory.innerHTML = catHtml;
+  }
+}
+
+function setupFilters() {
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      clearTimeout(searchTimeout);
+      
+      // Debounce API call by 300ms
+      searchTimeout = setTimeout(() => {
+        triggerDataFetch();
+      }, 300);
+    });
+  }
+
+  if (filterCategory) {
+    filterCategory.addEventListener("change", function () {
+      triggerDataFetch();
+    });
+  }
+}
+
+// Unified function to read both inputs and fetch data
+function triggerDataFetch() {
+  let currentSearch = searchInput ? searchInput.value.trim() : "";
+  
+  // Get the selected category value. If it's "All Categories", value is ""
+  let currentCategory = filterCategory ? filterCategory.value : "";
+
+  fetchInventoryData(currentCategory, currentSearch);
 }
 
 async function fetchInventoryData(category = "", searchQuery = "") {
@@ -98,8 +150,9 @@ function renderInventoryTable(dataList, tableBody) {
 
   dataList.forEach(asset => {
     let statusClass = "bg-secondary text-white";
+    
     if (asset.status === "active" || asset.status === "deployed") {
-        statusClass = "badge-endorsed"; // Reusing dashboard CSS classes
+        statusClass = "badge-endorsed"; 
     }
     if (asset.status === "defective" || asset.status === "in_repair") {
         statusClass = "badge-pending";
@@ -109,10 +162,10 @@ function renderInventoryTable(dataList, tableBody) {
     let location = asset.location_name || "Unassigned";
     let category = asset.category_name || "Uncategorized";
 
-    // Adding .table-row class instead of inline cursor pointer
+    // FIX: Removed 'text-white' from the first <td> to fix the invisible font bug
     htmlContent += `
       <tr class="table-row" onclick="openAssetDetailsModal(${asset.id})">
-        <td class="font-monospace small text-white">${asset.serial_number}</td>
+        <td class="font-monospace small fw-bold">${asset.serial_number}</td>
         <td><span class="badge bg-dark border border-secondary text-light">${category}</span></td>
         <td class="fw-medium">${asset.description}</td>
         <td class="po-text">${poNumber}</td>

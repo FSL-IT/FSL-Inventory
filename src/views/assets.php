@@ -28,9 +28,10 @@ $pageTitle = 'Inventory';
 
             <main id="main_content" class="p-4 overflow-auto flex-grow-1">
                 <!-- Put this inside your <main id="main_content"> tag -->
+<<!-- Page Header Wrapper -->
 <div class="d-flex justify-content-between align-items-end mb-4">
   <div>
-    <h3 class="text-white fw-bold mb-1" style="font-family: 'Syne', sans-serif;">
+    <h3 class="text-brand-navy fw-bold mb-1" style="font-family: 'Syne', sans-serif;">
       Inventory Search
     </h3>
     <div class="text-muted small">Manage and track all physical IT assets</div>
@@ -49,7 +50,7 @@ $pageTitle = 'Inventory';
 <div class="card bg-dark border-secondary mb-4">
   <div class="card-body p-3">
     <div class="row g-3">
-      <div class="col-md-6">
+      <div class="col-md-6 col-lg-5">
         <div class="input-group">
           <span class="input-group-text custom-input border-end-0">
             <i class="bi bi-search"></i>
@@ -58,18 +59,22 @@ $pageTitle = 'Inventory';
             type="text" 
             id="search_input"
             class="form-control custom-input border-start-0" 
-            placeholder="Search by serial, description, or PO..." />
+            placeholder="Search serial, description, or PO..." />
         </div>
       </div>
-      <div class="col-md-6 d-flex align-items-center gap-2 overflow-auto">
+      
+      <div class="col-md-6 col-lg-3">
+        <select class="form-select custom-input" id="filter_category">
+          <option value="">All Categories</option>
+          </select>
+      </div>
+
+      <div class="col-md-12 col-lg-4 d-flex align-items-center gap-2 overflow-auto">
         <span class="badge rounded-pill custom-input px-3 py-2 border border-warning text-warning" style="cursor: pointer;">
           All Locations
         </span>
         <span class="badge rounded-pill custom-input px-3 py-2" style="cursor: pointer;">
           Science Hub 1
-        </span>
-        <span class="badge rounded-pill custom-input px-3 py-2" style="cursor: pointer;">
-          Science Hub 2
         </span>
       </div>
     </div>

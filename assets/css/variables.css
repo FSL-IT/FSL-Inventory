@@ -37,3 +37,8 @@ body {
   font-family: 'DM Sans', 'Segoe UI', sans-serif;
   font-size: 13px;
 }
+
+/* Add this to your utility classes */
+.text-brand-navy {
+  color: var(--color-navy) !important;
+}

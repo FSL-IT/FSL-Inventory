@@ -207,3 +207,44 @@
 .sidebar-link-active i {
   color: var(--color-orange);
 }
+/* Sidebar Container */
+.sidebar-container {
+  width: 260px;
+  background-color: var(--color-navy-dark);
+}
+
+/* Sidebar Headings */
+.sidebar-heading {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Sidebar Links */
+.sidebar-link {
+  color: var(--color-text-muted) !important;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.18s ease-in-out;
+  border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+}
+
+/* Sidebar Hover State */
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-white) !important;
+}
+
+/* Sidebar Active State */
+.sidebar-link-active {
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.15) 0%, transparent 100%);
+  color: var(--color-orange) !important;
+  border-left: 3px solid var(--color-orange);
+}
+
+.sidebar-link-active i {
+  color: var(--color-orange);
+}
