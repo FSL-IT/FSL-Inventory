@@ -1,94 +1,205 @@
-document.addEventListener("DOMContentLoaded", loadDashboardData);
+const recentPoTable = document.getElementById("recent_po_table");
+const loadingSpinner = document.getElementById("loading_spinner");
+const btnViewAll = document.getElementById("btn_view_all");
 
-async function loadDashboardData() {
-    try {
-        let response = await fetch('/fsl-inventory/src/api/dashboard.php');
-        let data = await response.json();
+// KPI Elements
+const kpiTotalAssets = document.getElementById("kpi_total_assets");
+const kpiPoRecords = document.getElementById("kpi_po_records");
+const kpiEndorsed = document.getElementById("kpi_endorsed");
+const kpiPending = document.getElementById("kpi_pending");
 
-        if (!data.success) {
-            console.error("Failed to load dashboard data");
-            return;
-        }
+// Chart instances
+let barChartInstance = null;
+let donutChartInstance = null;
 
-        updateKPIs(data.kpis);
-        renderBarChart(data.charts.categories);
-        renderRecentPOs(data.recent_pos);
+if (btnViewAll) {
+  btnViewAll.addEventListener("click", navigateToPoTracker);
+}
 
-    } catch (error) {
-        console.error("Network error:", error);
+function navigateToPoTracker() {
+  window.location.href = "purchase_orders.php";
+}
+
+function statusBadge(endDate) {
+  let isPending = !endDate || endDate === "0000-00-00" || endDate === "null";
+
+  if (isPending) {
+    return '<span class="badge-pending">Pending</span>';
+  }
+  return '<span class="badge-endorsed">Endorsed</span>';
+}
+
+function updateTableHeaders() {
+  let thead = document.querySelector("#po_table_main thead tr");
+  
+  if (!thead) return;
+  
+  thead.innerHTML = `
+    <th>PO Number</th>
+    <th>Vendor</th>
+    <th>Date Received</th>
+    <th>Status</th>
+  `;
+}
+
+function renderDashboardTable(data) {
+  if (loadingSpinner) {
+    loadingSpinner.classList.add("d-none");
+  }
+
+  if (!data || !data.length) {
+    recentPoTable.innerHTML = 
+      '<tr><td colspan="4" class="text-center text-muted">' +
+      'No recent POs found.</td></tr>';
+    return;
+  }
+
+  updateTableHeaders();
+  let htmlContent = "";
+
+  data.forEach((row) => {
+    let poNumber = row.po_number || "-";
+    let vendor = row.vendor_name || "-";
+    let dateRecv = row.date_received || "-";
+
+    htmlContent += `
+      <tr class="table-row">
+        <td class="po-text fw-medium text-white">${poNumber}</td>
+        <td class="small text-muted">${vendor}</td>
+        <td class="small">${dateRecv}</td>
+        <td>${statusBadge(row.date_endorsed)}</td>
+      </tr>
+    `;
+  });
+
+  recentPoTable.innerHTML = htmlContent;
+}
+
+function updateKpis(kpiData) {
+  if (!kpiData) return;
+
+  if (kpiTotalAssets) {
+    kpiTotalAssets.textContent = kpiData.total_assets || "0";
+  }
+  
+  if (kpiPoRecords) {
+    kpiPoRecords.textContent = kpiData.total_pos || "0";
+  }
+  
+  if (kpiEndorsed) {
+    kpiEndorsed.textContent = kpiData.active_assets || "0";
+  }
+  
+  if (kpiPending) {
+    kpiPending.textContent = kpiData.attention_assets || "0";
+  }
+}
+
+function renderCharts(chartData, kpiData) {
+  let ctxBar = document.getElementById("chart_assets_bar");
+  let ctxDonut = document.getElementById("chart_endorse_donut");
+
+  if (ctxBar && chartData && chartData.categories) {
+    let labels = chartData.categories.map(item => item.category);
+    let values = chartData.categories.map(item => item.count);
+
+    if (barChartInstance) {
+      barChartInstance.destroy();
     }
-}
 
-function updateKPIs(kpis) {
-    let elTotal = document.getElementById("kpi_total_assets");
-    let elActive = document.getElementById("kpi_endorsed");
-    let elAttention = document.getElementById("kpi_pending");
-    let elPOs = document.getElementById("kpi_po_records");
-
-    if (elTotal) elTotal.textContent = kpis.total_assets;
-    if (elActive) elActive.textContent = kpis.active_assets;
-    if (elAttention) elAttention.textContent = kpis.attention_assets;
-    if (elPOs) elPOs.textContent = kpis.total_pos;
-}
-
-function renderBarChart(categoryData) {
-    let canvas = document.getElementById("chart_assets_bar");
-    if (!canvas || !categoryData.length) return;
-
-    // Extract labels and data arrays
-    let chartLabels = categoryData.map(item => item.category || 'Uncategorized');
-    let chartValues = categoryData.map(item => item.count);
-
-    let ctx = canvas.getContext("2d");
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: "Asset Count",
-                data: chartValues,
-                backgroundColor: "#0B1F3A", 
-                borderRadius: 4,
-                barPercentage: 0.6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { display: false, grid: { display: false } },
-                x: { grid: { display: false }, ticks: { color: "#8FA3BA", font: { size: 10 } } }
-            }
+    barChartInstance = new Chart(ctxBar, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Total Assets",
+          data: values,
+          backgroundColor: "#f97316",
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { 
+            beginAtZero: true, 
+            grid: { color: "rgba(255,255,255,0.05)" } 
+          },
+          x: { 
+            grid: { display: false }, 
+            ticks: { color: "#cbd5e1" } 
+          }
         }
+      }
     });
-}
+  }
 
-function renderRecentPOs(poList) {
-    let tableBody = document.getElementById("table_recent_pos_body");
-    if (!tableBody) return;
-
-    tableBody.innerHTML = ""; // Clear loader
-
-    if (!poList.length) {
-        tableBody.innerHTML = "<tr><td colspan='4' class='text-center text-muted'>No recent POs found.</td></tr>";
-        return;
+  if (ctxDonut && kpiData) {
+    if (donutChartInstance) {
+      donutChartInstance.destroy();
     }
 
-    poList.forEach(po => {
-        let tr = document.createElement("tr");
-        
-        // Status logic based on endorsement
-        let statusHtml = po.date_endorsed 
-            ? `<span class="status-badge endorsed">Endorsed</span>` 
-            : `<span class="status-badge pending">Pending</span>`;
-
-        tr.innerHTML = `
-            <td class="fw-bold" style="color: var(--color-orange);">${po.po_number}</td>
-            <td>${po.vendor_name || 'Unknown Vendor'}</td>
-            <td class="text-muted">${po.date_received || 'N/A'}</td>
-            <td>${statusHtml}</td>
-        `;
-        tableBody.appendChild(tr);
+    donutChartInstance = new Chart(ctxDonut, {
+      type: "doughnut",
+      data: {
+        labels: ["Endorsed", "Pending"],
+        datasets: [{
+          data: [kpiData.active_assets || 0, kpiData.attention_assets || 0],
+          backgroundColor: ["#4ade80", "#f97316"],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "75%",
+        plugins: {
+          legend: { position: "bottom", labels: { color: "#cbd5e1" } }
+        }
+      }
     });
+  }
 }
+
+async function fetchDashboardData() {
+  let response;
+
+  try {
+    response = await fetch("../api/dashboard.php");
+  } catch (error) {
+    console.error("Dashboard Data Network Error:", error);
+    if (loadingSpinner) {
+      loadingSpinner.classList.add("d-none");
+    }
+    recentPoTable.innerHTML = 
+      '<tr><td colspan="4" class="text-center text-danger">' +
+      'Failed to connect to the server.</td></tr>';
+    return;
+  }
+
+  if (!response.ok) {
+    console.error("Dashboard HTTP Error:", response.status);
+    return;
+  }
+
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (error) {
+    console.error("Dashboard JSON Parsing Error:", error);
+    return;
+  }
+
+  if (data.success) {
+    updateKpis(data.kpis);
+    renderCharts(data.charts, data.kpis);
+    renderDashboardTable(data.recent_pos);
+  }
+}
+
+// Initialization
+fetchDashboardData();

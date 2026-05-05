@@ -87,6 +87,46 @@ $pageTitle = 'Dashboard';
                         </div>
                     </div>
                 </div>
+
+                <!-- Recent PO Entries Section -->
+                <div class="card border-secondary mt-3" id="po_section">
+                <div 
+                    class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-black">Recent PO Entries</h5>
+                    <button 
+                    type="button" 
+                    class="btn btn-outline-secondary btn-sm" 
+                    id="btn_view_all">
+                    View All &rarr;
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                    <table class="table table-white table-hover mb-0" id="po_table_main">
+                        <thead>
+                        <tr class="text-uppercase text-muted small">
+                            <th>Description</th>
+                            <th>PO Number</th>
+                            <th>Qty</th>
+                            <th>Location</th>
+                            <th>Process Owner</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="recent_po_table">
+                        <!-- Default Loading Spinner -->
+                        <tr id="loading_spinner">
+                            <td colspan="6" class="text-center py-4">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                </div>
             </main>
         </div>
     </div>
