@@ -25,15 +25,53 @@ $pageTitle = 'PO Tracker';
             <?php include 'shared/header.php'; ?>
 
             <main id="main_content" class="p-4 overflow-auto flex-grow-1">
-                <div class="dashboard-panel p-0 overflow-hidden shadow-sm">
-                    <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
-                        <h6 class="fw-bold mb-0" style="color: var(--color-navy);">All Purchase Orders</h6>
-                        <div>
-                            <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-download me-1"></i> Export</button>
-                            <button class="btn btn-sm btn-primary-custom" id="btn_open_add_po">+ New PO</button>
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h3 class="text-white fw-bold mb-1" style="font-family: 'Syne', sans-serif;">
+                    Inventory Search
+                    </h3>
+                    <div class="text-muted small">Manage and track all physical IT assets</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary custom-input">
+                    <i class="bi bi-download me-1"></i> Export
+                    </button>
+                    <button type="button" class="btn custom-btn px-4" id="btn_add_asset">
+                    <i class="bi bi-plus-lg me-1"></i> Add Asset
+                    </button>
+                </div>
+                </div>
+
+                <!-- Search & Filter Toolbar -->
+                <div class="card bg-dark border-secondary mb-4">
+                <div class="card-body p-3">
+                    <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                        <span class="input-group-text custom-input border-end-0">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input 
+                            type="text" 
+                            id="search_input"
+                            class="form-control custom-input border-start-0" 
+                            placeholder="Search by serial, description, or PO..." />
                         </div>
                     </div>
-                    
+                    <div class="col-md-6 d-flex align-items-center gap-2 overflow-auto">
+                        <span class="badge rounded-pill custom-input px-3 py-2 border border-warning text-warning" style="cursor: pointer;">
+                        All Locations
+                        </span>
+                        <span class="badge rounded-pill custom-input px-3 py-2" style="cursor: pointer;">
+                        Science Hub 1
+                        </span>
+                        <span class="badge rounded-pill custom-input px-3 py-2" style="cursor: pointer;">
+                        Science Hub 2
+                        </span>
+                    </div>
+                    </div>
+                </div>
+                </div>                    
                     <div class="table-responsive">
                         <table class="table table-custom table-hover mb-0">
                             <thead>

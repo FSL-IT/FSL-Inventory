@@ -1,52 +1,81 @@
-<nav id="main_sidebar" class="sidebar-wrapper flex-shrink-0">
-  <!-- Logo Section -->
-  <div class="sidebar-brand d-flex align-items-center gap-3">
-    <div class="brand-icon">IT</div>
-    <div>
-      <div class="fw-bold text-white fs-6 lh-1">AssetTrack</div>
-      <div class="small mt-1" style="color: rgba(255,255,255,0.4); font-size: 11px;">PO Inventory System</div>
+<?php
+$current_page = basename($_SERVER['PHP_SELF']);
+
+$base_url = '/src/views/';
+?>
+
+<nav 
+  id="sidebar_nav" 
+  class="d-flex flex-column flex-shrink-0 p-3 h-100" 
+  style="width: 260px; background-color: var(--color-navy-dark);">
+  
+  <a href="<?php echo $base_url; ?>dashboard.php" 
+    class="d-flex align-items-center mb-4 text-white text-decoration-none">
+    <div class="brand-icon me-3 d-flex align-items-center justify-content-center fw-bold">
+      IT
     </div>
+    <span class="fs-5 fw-bold" style="font-family: 'Syne', sans-serif;">
+      AssetTrack
+    </span>
+  </a>
+  
+  <div class="sidebar-heading text-muted text-uppercase mb-2 px-2">Main</div>
+  <ul class="nav flex-column mb-4 gap-1">
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>dashboard.php" 
+        class="nav-link sidebar-link <?php echo $current_page == 'dashboard.php' ? 'sidebar-link-active' : ''; ?>">
+        <i class="bi bi-grid-1x2 me-2"></i> Dashboard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>assets.php" 
+        class="nav-link sidebar-link <?php echo $current_page == 'assets.php' ? 'sidebar-link-active' : ''; ?>">
+        <i class="bi bi-pc-display me-2"></i> Search Inventory
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>purchase_orders.php" 
+        class="nav-link sidebar-link <?php echo $current_page == 'purchase_orders.php' ? 'sidebar-link-active' : ''; ?>">
+        <i class="bi bi-receipt me-2"></i> PO Tracker
+      </a>
+    </li>
+  </ul>
+
+  <div class="sidebar-heading text-muted text-uppercase mb-2 px-2">
+    Categories
   </div>
+  <ul class="nav flex-column mb-4 gap-1">
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>categories.php" 
+        class="nav-link sidebar-link <?php echo $current_page == 'categories.php' ? 'sidebar-link-active' : ''; ?>">
+        <i class="bi bi-tags me-2"></i> Manage Categories
+      </a>
+    </li>
+  </ul>
 
-  <!-- Navigation Links -->
-  <div class="flex-grow-1 overflow-auto mt-2 pb-4">
-    
-    <div class="sidebar-section-title">Main</div>
-    <a href="/fsl-inventory/src/views/dashboard.php" class="sidebar-nav-item">
-      <i class="bi bi-grid-fill fs-5"></i> Dashboard
-    </a>
-    <a href="/fsl-inventory/src/views/assets.php" class="sidebar-nav-item">
-      <i class="bi bi-list-task fs-5"></i> Inventory
-      <span class="sidebar-badge">229</span>
-    </a>
-
-    <<div class="sidebar-section-title mt-2">Categories</div>
-    <div class="sidebar-nav-item" id="btn_toggle_categories">
-      <i class="bi bi-filter-left fs-5"></i> Filter by category
-      <i class="bi bi-caret-right-fill ms-auto small transition" id="icon_category_caret"></i>
+  <?php if (function_exists('isAdmin') && isAdmin()): ?>
+    <div class="sidebar-heading text-muted text-uppercase mb-2 px-2 mt-auto">
+      System
     </div>
-    
-    <!-- This will be populated by app.js fetching from database -->
-    <div class="category-menu d-none" id="menu_categories">
-        <div class="text-muted small ps-3 py-2">Loading...</div>
-    </div>
-
-    <!-- Admin Section -->
-    <?php if (isAdmin()): ?>
-      <div class="sidebar-section-title mt-2">Admin</div>
-      <a href="/fsl-inventory/src/views/admin/audit_logs.php" class="sidebar-nav-item">
-        <i class="bi bi-clock-history fs-5"></i> Audit History
-        <span class="sidebar-badge bg-secondary">14</span>
-      </a>
-      <a href="/fsl-inventory/src/views/admin/users.php" class="sidebar-nav-item">
-        <i class="bi bi-person-fill fs-5"></i> User Management
-      </a>
-      <a href="/fsl-inventory/src/views/admin/categories.php" class="sidebar-nav-item">
-        <i class="bi bi-hexagon fs-5"></i> Category Mgmt
-      </a>
-      <a href="#" class="sidebar-nav-item">
-        <i class="bi bi-upload fs-5"></i> Export / Import
-      </a>
-    <?php endif; ?>
-  </div>
+    <ul class="nav flex-column gap-1">
+      <li class="nav-item">
+        <a href="<?php echo $base_url; ?>admin/users.php" 
+          class="nav-link sidebar-link <?php echo $current_page == 'users.php' ? 'sidebar-link-active' : ''; ?>">
+          <i class="bi bi-people me-2"></i> User Management
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="<?php echo $base_url; ?>admin/audit_logs.php" 
+          class="nav-link sidebar-link <?php echo $current_page == 'audit_logs.php' ? 'sidebar-link-active' : ''; ?>">
+          <i class="bi bi-clock-history me-2"></i> Audit History
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="<?php echo $base_url; ?>admin/backup.php" 
+          class="nav-link sidebar-link <?php echo $current_page == 'backup.php' ? 'sidebar-link-active' : ''; ?>">
+          <i class="bi bi-database-down me-2"></i> Backup & Restore
+        </a>
+      </li>
+    </ul>
+  <?php endif; ?>
 </nav>
